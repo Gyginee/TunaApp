@@ -12,8 +12,8 @@ namespace Server
         public const int ServerPort = 12345;
 
         // Cấu hình Gmail SMTP
-        public const string GmailAddress = "nguyenminhhung.work@gmail.com";
-        public const string GmailAppPassword = "imph xxtg etql kfvx"; // Sử dụng mật khẩu ứng dụng nếu bật 2FA
+        public const string GmailAddress = "example@gmail.com";
+        public const string GmailAppPassword = "Password APP"; // Sử dụng mật khẩu ứng dụng nếu bật 2FA
         public const string GmailSmtpServer = "smtp.gmail.com";
         public const int GmailSmtpPort = 587;
     }
