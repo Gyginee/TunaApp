@@ -1,0 +1,16 @@
+2025/04/12-15:59:34.730 4364 Reusing MANIFEST F:\HumanProjects\Tuna\TunaApp\Client\bin\Debug\net8.0-windows\Client.exe.WebView2\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
+2025/04/12-15:59:34.734 4364 Recovering log #5
+2025/04/12-15:59:34.735 4364 Level-0 table #8: started
+2025/04/12-15:59:34.738 4364 Level-0 table #8: 46301 bytes OK
+2025/04/12-15:59:34.742 4364 Delete type=0 #5
+2025/04/12-15:59:45.739 2d2c Level-0 table #11: started
+2025/04/12-15:59:45.746 2d2c Level-0 table #11: 99300 bytes OK
+2025/04/12-15:59:45.747 2d2c Delete type=0 #9
+2025/04/12-15:59:45.748 2d2c Compacting 4@0 + 0@1 files
+2025/04/12-15:59:45.752 2d2c Generated table #12@0: 25 keys, 97127 bytes
+2025/04/12-15:59:45.752 2d2c Compacted 4@0 + 0@1 files => 97127 bytes
+2025/04/12-15:59:45.753 2d2c compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/04/12-15:59:45.753 2d2c Delete type=2 #3
+2025/04/12-15:59:45.753 2d2c Delete type=2 #6
+2025/04/12-15:59:45.753 2d2c Delete type=2 #8
+2025/04/12-15:59:45.753 2d2c Delete type=2 #11

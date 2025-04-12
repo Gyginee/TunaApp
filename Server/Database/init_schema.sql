@@ -1,0 +1,59 @@
+﻿-- File: init_schema.sql
+PRAGMA foreign_keys = ON;
+
+-- Tài khoản người dùng
+CREATE TABLE IF NOT EXISTS Users (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Username TEXT UNIQUE NOT NULL,
+    Password TEXT NOT NULL
+);
+
+-- Nhóm chat
+CREATE TABLE IF NOT EXISTS Groups (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    GroupName TEXT UNIQUE NOT NULL,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Thành viên trong nhóm
+CREATE TABLE IF NOT EXISTS GroupMembers (
+    GroupId INTEGER NOT NULL,
+    UserId INTEGER NOT NULL,
+    FOREIGN KEY (GroupId) REFERENCES Groups(Id) ON DELETE CASCADE,
+    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
+    PRIMARY KEY (GroupId, UserId)
+);
+
+-- Tin nhắn riêng giữa 2 người
+CREATE TABLE IF NOT EXISTS PrivateMessages (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    SenderId INTEGER NOT NULL,
+    ReceiverId INTEGER NOT NULL,
+    Content TEXT,
+    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (SenderId) REFERENCES Users(Id) ON DELETE CASCADE,
+    FOREIGN KEY (ReceiverId) REFERENCES Users(Id) ON DELETE CASCADE
+);
+
+-- Tin nhắn nhóm
+CREATE TABLE IF NOT EXISTS GroupMessages (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    GroupId INTEGER NOT NULL,
+    SenderId INTEGER NOT NULL,
+    Content TEXT,
+    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (GroupId) REFERENCES Groups(Id) ON DELETE CASCADE,
+    FOREIGN KEY (SenderId) REFERENCES Users(Id) ON DELETE CASCADE
+);
+
+-- Tin nhắn có file (áp dụng cho cả riêng và nhóm)
+CREATE TABLE IF NOT EXISTS FileMessages (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    SenderId INTEGER NOT NULL,
+    ReceiverId INTEGER NOT NULL,
+    ReceiverType TEXT CHECK (ReceiverType IN ('private', 'group')) NOT NULL,
+    FileName TEXT NOT NULL,
+    FilePath TEXT NOT NULL,
+    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (SenderId) REFERENCES Users(Id) ON DELETE CASCADE
+);
