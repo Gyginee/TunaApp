@@ -229,6 +229,10 @@ namespace Server
                             await state.Writer.WriteLineAsync("GOLD_JSON|" + json);
                             break;
                         }
+                    case "GET_MAILS":
+                        await MailHandlers.HandleGetMails(state.Writer, state.Username);
+                        break;
+
                     case "SEND_MAIL":
                         // Định dạng lệnh: SEND_MAIL|recipient|title|cc|bcc|body
                         if (parts.Length >= 6)

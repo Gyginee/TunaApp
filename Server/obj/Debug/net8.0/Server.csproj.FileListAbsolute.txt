@@ -4,9 +4,12 @@ F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\Server.deps.json
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\Server.runtimeconfig.json
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\Server.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\Server.pdb
+F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\EntityFramework.SqlServer.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\EntityFramework.dll
+F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\MailKit.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\MimeKit.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\Newtonsoft.Json.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\System.Data.SQLite.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\System.CodeDom.dll
@@ -14,6 +17,7 @@ F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\System.Configuration.Confi
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\System.Data.SqlClient.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\System.Data.SQLite.EF6.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\System.Drawing.Common.dll
+F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\System.Security.Permissions.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\System.Windows.Extensions.dll
@@ -29,6 +33,7 @@ F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\runtimes\unix\lib\netcorea
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 F:\HumanProjects\Tuna\TunaApp\Server\bin\Debug\net8.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.csproj.AssemblyReference.cache
@@ -36,10 +41,10 @@ F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.GeneratedMSBuildEdi
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.AssemblyInfoInputs.cache
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.AssemblyInfo.cs
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.csproj.CoreCompileInputs.cache
+F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.sourcelink.json
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.csproj.Up2Date
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.dll
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\refint\Server.dll
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.pdb
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.genruntimeconfig.cache
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\ref\Server.dll
-F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.sourcelink.json

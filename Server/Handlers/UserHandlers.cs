@@ -43,14 +43,24 @@ namespace Server.Handlers
             {
                 try
                 {
-                    var reply = await ping.SendPingAsync(ipAddress, 1000);
-                    return reply.Status == IPStatus.Success
-                        ? $"✔ Ping OK: {reply.RoundtripTime} ms"
-                        : $"❌ Ping thất bại: {reply.Status}";
+                    var reply = await ping.SendPingAsync(ipAddress, 10000); // timeout 10s
+
+                    if (reply.Status == IPStatus.Success)
+                    {
+                        return $"✔ Ping OK: {reply.RoundtripTime} ms";
+                    }
+                    else
+                    {
+                        return $"❌ Ping thất bại: {reply.Status}";
+                    }
                 }
                 catch (PingException ex)
                 {
-                    return $"❌ Ping lỗi: {ex.Message}";
+                    return $"❌ Lỗi Ping: {ex.Message}";
+                }
+                catch (Exception ex)
+                {
+                    return $"❌ Lỗi hệ thống: {ex.Message}";
                 }
             }
         }

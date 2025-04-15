@@ -1,78 +1,141 @@
-﻿using System;
+﻿using Client.Models;
+using Client.Utils;
+using Client.ChildForm;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
-using Client.Models;
-using Client.Utils;  // Đảm bảo rằng lớp InformationManager và AppState đã được định nghĩa
 
 namespace Client
 {
     public partial class Mail : Form
     {
+        private List<EmailInfo> currentEmails = new();
+
         public Mail()
         {
             InitializeComponent();
         }
 
-        // Sự kiện gửi mail khi nhấn nút "Gửi"
-        // Sự kiện nhấn nút Gửi mail
-        private async void btnSend_Click(object sender, EventArgs e)
+        private async void Mail_Load(object sender, EventArgs e)
         {
-            string recipient = txtRecipient.Text.Trim();
-            string title = txtTitle.Text.Trim();
-            string cc = txtCC.Text.Trim();
-            string bcc = txtBCC.Text.Trim();
-            string body = txtBody.Text.Trim();
+            SetupListViewColumns();
+            await LoadServerMails();
+        }
 
-            // Kiểm tra thông tin bắt buộc: người nhận, tiêu đề và nội dung mail
-            if (string.IsNullOrEmpty(recipient) || string.IsNullOrEmpty(title) || string.IsNullOrEmpty(body))
+        private void SetupListViewColumns()
+        {
+            if (listViewEmails.Columns.Count == 0)
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin bắt buộc: Người nhận, Tiêu đề và Nội dung.",
-                                  "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                listViewEmails.Columns.Add("Sender", 150, HorizontalAlignment.Left);
+                listViewEmails.Columns.Add("Subject", 250, HorizontalAlignment.Left);
+                listViewEmails.Columns.Add("CC", 200, HorizontalAlignment.Left);
+                listViewEmails.Columns.Add("Received Date", 150, HorizontalAlignment.Left);
+                listViewEmails.View = View.Details;
+                listViewEmails.FullRowSelect = true;
+                listViewEmails.GridLines = true;
             }
+        }
 
-            // Cho phép CC và BCC để trống; nếu trống thì chuyển thành chuỗi rỗng
-            if (string.IsNullOrWhiteSpace(cc)) cc = "";
-            if (string.IsNullOrWhiteSpace(bcc)) bcc = "";
-
-            // Tạo lệnh gửi mail theo định dạng: SEND_MAIL|recipient|title|cc|bcc|body
-            string command = $"SEND_MAIL|{recipient}|{title}|{cc}|{bcc}|{body}";
-
+        private async Task LoadServerMails()
+        {
             try
             {
-                // Gửi lệnh mail đến server sử dụng UtilityManager gửi lệnh một lần
-                // Câu lệnh command có định dạng: SEND_MAIL|recipient|title|cc|bcc|body
-                string response = await UtilityManager.SendSingleCommandAsync(AppState.CurrentUser, command);
-
-                if (response.StartsWith("SEND_MAIL_SUCCESS"))
-                {
-                    MessageBox.Show("Mail đã được gửi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("Gửi mail thất bại: " + response, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                currentEmails = await MailManager.GetMailsAsync(AppState.CurrentUser);
+                DisplayEmails(currentEmails);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi gửi mail: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi khi tải mail: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Sự kiện nhấn nút "Hủy"
-        private void btnCancel_Click(object sender, EventArgs e)
+     
+        private void DisplayEmails(List<EmailInfo> emails)
         {
-            this.Close();
+            listViewEmails.Items.Clear();
+            if (emails == null) return;
+
+            foreach (var email in emails)
+            {
+                var item = new ListViewItem(email.Sender);
+                item.SubItems.Add(email.Subject);
+                item.SubItems.Add(email.Cc ?? "");
+                item.SubItems.Add(email.ReceivedDate.ToString("yyyy-MM-dd HH:mm"));
+                item.Tag = email;
+
+                item.Font = email.IsRead
+                    ? new Font(listViewEmails.Font, FontStyle.Regular)
+                    : new Font(listViewEmails.Font, FontStyle.Bold);
+
+                listViewEmails.Items.Add(item);
+            }
+
+            listViewEmails.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
-        // Khi người dùng đóng form bằng thao tác ngoài chương trình (như nút X)
-        protected override async void OnFormClosing(FormClosingEventArgs e)
+        private void listViewEmails_DoubleClick(object sender, EventArgs e)
+        {
+            if (listViewEmails.SelectedItems.Count != 1) return;
+
+            var selectedItem = listViewEmails.SelectedItems[0];
+            if (selectedItem.Tag is EmailInfo selectedEmail)
+            {
+                // Đánh dấu đã đọc (giữ nguyên logic cũ)
+                if (!selectedEmail.IsRead)
+                {
+                    selectedEmail.IsRead = true;
+                    selectedItem.Font = new Font(listViewEmails.Font, FontStyle.Regular);
+                    // TODO: Gửi thông báo đã đọc lên server nếu cần
+                }
+
+                // --- Thay thế MessageBox bằng Form mới ---
+                // Kiểm tra xem form chi tiết đã mở cho email này chưa để tránh mở nhiều lần
+                bool isOpen = false;
+                foreach (Form openForm in Application.OpenForms)
+                {
+                    if (openForm is EmailDetailForm detailForm && detailForm.Tag == selectedEmail) // Sử dụng Tag để định danh
+                    {
+                        detailForm.BringToFront(); // Đưa form đã mở lên trên
+                        isOpen = true;
+                        break;
+                    }
+                }
+
+                if (!isOpen)
+                {
+                    // Tạo và hiển thị form chi tiết
+                    var detailForm = new EmailDetailForm(selectedEmail);
+                    detailForm.Tag = selectedEmail; // Gán Tag để kiểm tra ở trên
+                    detailForm.Show(this); // Hiển thị form (non-modal), this để set Owner
+                                           // Hoặc dùng detailForm.ShowDialog(this); nếu muốn modal (khóa form Mail)
+                }
+                // --- Kết thúc thay thế ---
+            }
+        }
+
+        private void tsbCompose_Click(object sender, EventArgs e)
+        {
+            using var mailSendForm = new MailSend();
+            mailSendForm.ShowDialog(this);
+        }
+
+        private async void tsbRefresh_Click(object sender, EventArgs e)
+        {
+            // Thêm hiệu ứng chờ nếu muốn (ví dụ: thay đổi con trỏ chuột)
+            this.Cursor = Cursors.WaitCursor;
+            await LoadServerMails();
+            this.Cursor = Cursors.Default;
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
-                e.Cancel = true; // Tạm hoãn đóng form
-                this.Hide();     // Ẩn form hiện tại
-                Menu.Instance.Show(); // Hiển thị lại form Menu (Menu là form chính của ứng dụng)
+                e.Cancel = true;
+                this.Hide();
+                Menu.Instance.Show();
             }
             else
             {

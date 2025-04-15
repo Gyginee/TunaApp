@@ -85,8 +85,7 @@ namespace Server.Handlers
 
                     if (File.Exists(filePath))
                     {
-                        string content = await File.ReadAllTextAsync(filePath);
-                        byte[] buffer = Encoding.UTF8.GetBytes(content);
+                        byte[] buffer = await File.ReadAllBytesAsync(filePath); // ✅ dùng cho cả ảnh & text
 
                         res.ContentType = GetMimeType(filePath);
                         res.ContentLength64 = buffer.Length;
@@ -108,6 +107,7 @@ namespace Server.Handlers
 
                         Log($"❌ 404 Not Found: /{requestPath}");
                     }
+
                 }
                 catch (Exception ex)
                 {

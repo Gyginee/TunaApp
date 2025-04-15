@@ -64,6 +64,8 @@ namespace Client.ChildForm
             {
                 string response = await UtilityManager.SendSingleCommandAsync(AppState.CurrentUser, $"PING_USER_IP|{selected}");
 
+                MessageBox.Show(response, "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 if (response.StartsWith("PING_USER_IP_RESULT|"))
                 {
                     string[] parts = response.Split('|');
