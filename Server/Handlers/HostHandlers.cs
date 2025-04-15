@@ -29,7 +29,7 @@ namespace Server.Handlers
             }
 
             _listener = new HttpListener();
-            _listener.Prefixes.Add($"http://localhost:{port}/");
+            _listener.Prefixes.Add($"http://+:{port}/");
             _listener.Start();
             _isRunning = true;
 

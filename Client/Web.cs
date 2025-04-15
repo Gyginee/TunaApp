@@ -47,20 +47,38 @@ namespace Client
 
         private void goBtn_Click(object sender, EventArgs e)
         {
-            string url = addressBox.Text.Trim();
-            if (!string.IsNullOrEmpty(url))
+            string input = addressBox.Text.Trim();
+            if (string.IsNullOrEmpty(input))
             {
-                if (!url.StartsWith("http://") && !url.StartsWith("https://"))
-                {
-                    url = "https://" + url;
-                }
-                webView.Source = new Uri(url);
+                MessageBox.Show("Vui lòng nhập địa chỉ web!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!input.Contains(".") || Uri.CheckHostName(input) == UriHostNameType.Unknown)
+            {
+                // Nếu không phải domain, thì search Google
+                string query = Uri.EscapeDataString(input);
+                webView.Source = new Uri($"https://www.google.com/search?q={query}");
             }
             else
             {
-                MessageBox.Show("Vui lòng nhập địa chỉ web!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                // Nếu là domain (và không có http/https), thêm vào
+                if (!input.StartsWith("http://") && !input.StartsWith("https://"))
+                {
+                    input = "https://" + input;
+                }
+
+                try
+                {
+                    webView.Source = new Uri(input);
+                }
+                catch
+                {
+                    MessageBox.Show("Địa chỉ không hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
+
 
         private void WebView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
         {

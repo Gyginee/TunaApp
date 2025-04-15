@@ -42,3 +42,4 @@ F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\refint\Server.dll
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.pdb
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.genruntimeconfig.cache
 F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\ref\Server.dll
+F:\HumanProjects\Tuna\TunaApp\Server\obj\Debug\net8.0\Server.sourcelink.json

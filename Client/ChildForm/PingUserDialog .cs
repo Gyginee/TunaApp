@@ -24,14 +24,12 @@ namespace Client.ChildForm
 
             try
             {
-                // Khởi tạo kết nối nếu cần
                 if (!await UserManager.InitializeAsync(AppState.CurrentUser))
                 {
                     statusLabel.Text = "❌ Không kết nối được tới server (UserManager).";
                     return;
                 }
 
-                // Gửi lệnh GET_USER_AND_GROUPS và xử lý phản hồi
                 var users = await UserManager.GetOnlineUsersAsync(AppState.CurrentUser);
                 users = users.Where(u => u != AppState.CurrentUser).ToArray();
 
@@ -51,7 +49,6 @@ namespace Client.ChildForm
             }
         }
 
-
         private async void ListBoxUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selected = listBoxUsers.SelectedItem?.ToString();
@@ -61,33 +58,40 @@ namespace Client.ChildForm
                 return;
             }
 
-            statusLabel.Text = $"🔍 Kiểm tra {selected}...";
+            statusLabel.Text = $"📡 Đang ping {selected}...";
 
-            // Bước 1: Kiểm tra user có tồn tại không
-            var checkResp = await UtilityManager.SendSingleCommandAsync(AppState.CurrentUser, $"GET_USER|{selected}");
-            if (!checkResp.StartsWith("USER|"))
+            try
             {
-                statusLabel.Text = $"❌ Người dùng '{selected}' không tồn tại.";
-                return;
+                string response = await UtilityManager.SendSingleCommandAsync(AppState.CurrentUser, $"PING_USER_IP|{selected}");
+
+                if (response.StartsWith("PING_USER_IP_RESULT|"))
+                {
+                    string[] parts = response.Split('|');
+
+                    if (parts.Length >= 4 && parts[1] != "FAIL")
+                    {
+                        string username = parts[1];
+                        string ip = parts[2];
+                        string pingResult = parts[3];
+
+                        statusLabel.Text = $"📍 {username} @ {ip} — {pingResult}";
+                    }
+                    else
+                    {
+                        statusLabel.Text = "❌ Không tìm thấy người dùng hoặc IP.";
+                    }
+                }
+                else
+                {
+                    statusLabel.Text = "❌ Phản hồi không hợp lệ từ server.";
+                }
+
+                SelectedUser = selected;
             }
-
-            var pingResp = await UtilityManager.SendSingleCommandAsync(AppState.CurrentUser, $"PING_USER|{selected}");
-
-            if (pingResp.StartsWith("PONG_USER"))
+            catch (Exception ex)
             {
-                statusLabel.Text = $"✅ {selected} đang online.";
+                statusLabel.Text = $"❌ Lỗi khi ping: {ex.Message}";
             }
-            else if (pingResp.StartsWith("PING_FAIL"))
-            {
-                statusLabel.Text = $"🔴 {selected} không online.";
-            }
-            else
-            {
-                statusLabel.Text = $"❌ Không phản hồi từ server (timeout hoặc lỗi).";
-            }
-
-
-            SelectedUser = selected;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

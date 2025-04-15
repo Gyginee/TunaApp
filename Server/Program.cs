@@ -22,6 +22,7 @@ namespace Server
         public StreamWriter Writer { get; set; }
         public StreamReader Reader { get; set; }
         public string ConnectionType { get; set; }
+        public string IPAddress { get; set; }
     }
 
     class Program
@@ -122,7 +123,7 @@ namespace Server
 
         static async Task HandleClient(TcpClient tcpClient)
         {
-            ClientState clientState = new ClientState { Client = tcpClient };
+            ClientState clientState = new ClientState { Client = tcpClient, IPAddress = ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString() };
 
             try
             {
@@ -241,26 +242,23 @@ namespace Server
                         }
                         break;
 
-                    case "PING_USER":
-                        // Lệnh có định dạng: PING_USER|targetUser
-                        if (parts.Length >= 2)
+                    case "PING_USER_IP":
                         {
-                            string target = parts[1];
-                            var targetClient = AuthHandlers.GetClient(target, "LOGIN");
-                            if (targetClient != null)
+                            string targetUser = parts.ElementAtOrDefault(1);
+                            if (!string.IsNullOrEmpty(targetUser) &&
+                                ClientsByUser.TryGetValue(targetUser, out var targetDict) &&
+                                targetDict.TryGetValue("LOGIN", out var targetClient))
                             {
-                                await state.Writer.WriteLineAsync($"PONG_USER|{target}");
+                                string ipToPing = targetClient.IPAddress;
+                                string result = await UserHandlers.PingHostAsync(ipToPing);
+                                await state.Writer.WriteLineAsync("PING_USER_IP_RESULT|" + targetUser + "|" + ipToPing + "|" + result);
                             }
                             else
                             {
-                                await state.Writer.WriteLineAsync("PING_FAIL|User không online");
+                                await state.Writer.WriteLineAsync("PING_USER_IP_RESULT|FAIL|Không tìm thấy user hoặc IP");
                             }
+                            break;
                         }
-                        else
-                        {
-                            await state.Writer.WriteLineAsync("PING_FAIL|Thiếu target");
-                        }
-                        break;
 
                     default: await state.Writer.WriteLineAsync("UNKNOWN_COMMAND"); break;
                 }

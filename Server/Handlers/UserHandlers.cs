@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Server.Models;
 
@@ -33,6 +34,24 @@ namespace Server.Handlers
             catch (Exception ex)
             {
                 await writer.WriteLineAsync("ERROR|" + ex.Message);
+            }
+        }
+
+        public static async Task<string> PingHostAsync(string ipAddress)
+        {
+            using (Ping ping = new Ping())
+            {
+                try
+                {
+                    var reply = await ping.SendPingAsync(ipAddress, 1000);
+                    return reply.Status == IPStatus.Success
+                        ? $"✔ Ping OK: {reply.RoundtripTime} ms"
+                        : $"❌ Ping thất bại: {reply.Status}";
+                }
+                catch (PingException ex)
+                {
+                    return $"❌ Ping lỗi: {ex.Message}";
+                }
             }
         }
     }

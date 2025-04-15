@@ -8,7 +8,7 @@ namespace Client
 {
     internal class ServerConfig
     {
-        public const string ServerIP = "127.0.0.1";
+        public const string ServerIP = "192.168.1.248";
         public const int ServerPort = 12345;
     }
 }

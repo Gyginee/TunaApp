@@ -56,3 +56,4 @@ F:\HumanProjects\Tuna\TunaApp\Client\obj\Debug\net8.0-windows\Client.pdb
 F:\HumanProjects\Tuna\TunaApp\Client\obj\Debug\net8.0-windows\Client.genruntimeconfig.cache
 F:\HumanProjects\Tuna\TunaApp\Client\obj\Debug\net8.0-windows\ref\Client.dll
 F:\HumanProjects\Tuna\TunaApp\Client\obj\Debug\net8.0-windows\Client.ChildForm.PingUserDialog.resources
+F:\HumanProjects\Tuna\TunaApp\Client\obj\Debug\net8.0-windows\Client.sourcelink.json

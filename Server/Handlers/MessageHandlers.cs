@@ -57,8 +57,6 @@ namespace Server.Handlers
             }
         }
 
-
-
         public static async Task HandleDirectMessage(string sender, string recipient, string content)
         {
             var receiverClient = GetClient(recipient, "MESSAGE");
