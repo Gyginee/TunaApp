@@ -1,0 +1,32 @@
+# 👉 Thư mục build output
+Client/bin/
+Server/bin/
+bin/
+obj/
+publish/
+
+# 👉 Kết quả biên dịch
+*.exe
+*.dll
+*.pdb
+
+# 👉 Tệp cấu hình user riêng
+*.user
+*.suo
+*.csproj.user
+*.csproj.Debug.cache
+
+# 👉 Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.idea/
+_ReSharper*/
+*.ncrunch*
+
+# 👉 Tệp tạm & backup
+*.log
+*.bak
+*.tmp
+*.cache
+*.db-shm
+*.db-wal
