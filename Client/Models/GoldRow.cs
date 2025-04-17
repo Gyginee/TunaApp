@@ -8,9 +8,11 @@ namespace Client.Models
 {
     public class GoldRow
     {
-        public string type { get; set; }
-        public string buy { get; set; }
-        public string sell { get; set; }
+        public string Type { get; set; }
+        public string Branch { get; set; }
+        public string Buy { get; set; }
+        public string Sell { get; set; }
     }
+
 
 }

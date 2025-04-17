@@ -187,6 +187,14 @@ namespace Client
                         FillWeight = 40 
                     });
 
+                    goldData.Columns.Add(new DataGridViewTextBoxColumn
+                    {
+                        Name = "branch",
+                        HeaderText = "Chi nhánh",
+                        DataPropertyName = "branch",
+                        AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                        FillWeight = 30
+                    });
                     DataGridViewCellStyle numberStyle = new DataGridViewCellStyle(goldData.DefaultCellStyle);
                     numberStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                     numberStyle.Format = "N0"; 

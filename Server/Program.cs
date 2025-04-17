@@ -63,8 +63,9 @@ namespace Server
             AuthHandlers._userRepo = _userRepo;
 
             UserHandlers._userRepo = _userRepo;
-
+   
             await GoldHandlers.InitializeAsync();
+      
             await StartServer(ServerConfig.ServerPort);
 
             Console.WriteLine("Server stopped.");
@@ -110,9 +111,20 @@ namespace Server
 
         static async Task StartServer(int port)
         {
+            Console.WriteLine("🧪 Bắt đầu khởi động server TCP...");
             TcpListener server = new TcpListener(IPAddress.Any, port);
-            server.Start();
-            Console.WriteLine($"Server listening on port {port}...");
+            //server.Start();
+           // Console.WriteLine($"Server listening on port {port}...");
+            try
+            {
+                server.Start();
+                Console.WriteLine($"✅ Server listening on port {port}...");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("❌ Lỗi khi mở cổng:");
+                Console.WriteLine(ex.ToString());
+            }
 
             while (true)
             {
@@ -226,7 +238,8 @@ namespace Server
                             Console.WriteLine($"[GOLD] Nhận yêu cầu GOLD từ {state.Username} ({state.ConnectionType})");
                             string json = await GoldHandlers.GetGoldPriceJsonAsync();
                             Console.WriteLine($"[GOLD] Trả JSON dài {json.Length} ký tự");
-                            await state.Writer.WriteLineAsync("GOLD_JSON|" + json);
+                            await state.Writer.WriteAsync("GOLD_JSON|" + json + "\n"); 
+
                             break;
                         }
                     case "GET_MAILS":
